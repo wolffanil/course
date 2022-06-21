@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
               hours = Math.floor()
     }
           
-    function setClock()
+
 });
 
 // const now = new Date();

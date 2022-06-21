@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const t = Date.parse(endtime) - Date.parse(Date()),
               days = Math.floor(t / (1000 * 60 * 60 * 24)),
               hours = Math.floor();
+              const dd = 12;
     }
           
 

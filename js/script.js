@@ -118,7 +118,7 @@ setClock('.timer', deadline);
         modal.classList.add('show');
         modal.classList.remove('hide');
         document.body.style.overflow = 'hidden';
-        clearInterval(modalTimerId);
+        // clearInterval(modalTimerId);
     }
 
     btnOpen.forEach(btn => {
@@ -146,7 +146,7 @@ setClock('.timer', deadline);
         }
     });
 
-    const modalTimerId = setTimeout(openModal, 5000);
+    // const modalTimerId = setTimeout(openModal, 5000);
 
     function showModalByScroll() { //
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight -1) {
@@ -158,6 +158,96 @@ setClock('.timer', deadline);
     window.addEventListener('scroll', showModalByScroll); //
 
     // {once: true}
+
+    //используем карточки
+
+    class MenuCard {
+        constructor(src, alt, title, descr, price, parentSelector, ...classes) {
+            this.src = src;
+            this.alt = alt;
+            this.title = title;
+            this.descr = descr;
+            this.price = price;
+            this.classes = classes;
+            this.parent = document.querySelector(parentSelector);
+            this.transfer = 27;
+            this.changeToUAH();
+
+        }
+
+        changeToUAH() {
+            this.price = this.price * this.transfer;
+        }
+
+        render() {
+            const element = document.createElement('div');
+
+            if(this.classes.length === 0) { // если пустой массив
+                this.element = 'menu__item';
+                element.classList.add(this.element);
+            } else {
+            this.classes.forEach(className => element.classList.add(className)); 
+            }
+
+            element.innerHTML = `
+                    <img src=${this.src} alt=${this.alt}>
+                    <h3 class="menu__item-subtitle">${this.title}</h3>
+                    <div class="menu__item-descr">${this.descr}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                    </div>`;
+
+                this.parent.append(element);
+        }
+    }
+
+    new MenuCard(
+        "img/tabs/post.jpg",
+        "post",
+        'Меню "Постное"',
+        "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.",
+        10,
+        '.menu .container',
+        'menu__item',
+        'big'
+    ).render();
+
+
+
+    // class Rect {
+    //     constructor(name, age) {
+    //         this.name = name;
+    //         this.age = age;
+    //     }
+
+    //     celAge() {
+    //         return this.name * this.age;
+    //     }
+    // }
+
+    // class Rectgg extends Rect{
+    //     constructor(name, age, color, hh) {
+    //         super(name, age); // super должен стоять на первом месте
+    //         this.color = color;
+    //         this.hh = hh;
+    //     }
+
+    //     showGG() {
+    //         console.log(`привет ${this.hh} цвет ${this.color}`);
+    //     }
+    // }
+
+    // const ghj = new Rectgg(2, 12, 'red', 'саша');
+
+    // ghj.showGG();
+
+    // console.log(ghj.celAge());
+
+    // const fff = new Rect(12, 20);
+
+    // console.log(fff.celAge());
 
 });
 

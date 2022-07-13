@@ -237,11 +237,8 @@ setClock('.timer', deadline);
             `;
             form.insertAdjacentElement('afterend', statusMessage);
 
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
-
+            
             // request.setRequestHeader('Content-type', 'multipart/form-data');
-            request.setRequestHeader('Content-type', 'application/json');
 
             const formData = new FormData(form);
 
@@ -251,22 +248,40 @@ setClock('.timer', deadline);
                 object[key] = value;
             });
 
-            const json = JSON.stringify(object);
 
-            request.send(json);
+            fetch('server.php', {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(object)
 
-            request.addEventListener('load', () => {
-                if (request.status === 200) {
-                    console.log(request.response);
-                    showThanksModal(message.success);
-                    form.reset();
-                    setTimeout(() => {
-                        statusMessage.remove();
-                    }, 2000);
-                } else {
-                    showThanksModal(message.failure);
-                }
+            })
+            .then(data => data.text())
+            .then(data => {
+                console.log(data);
+                showThanksModal(message.success);
+                setTimeout(() => {
+                    statusMessage.remove();
+                }, 2000);
+            }).catch(() => {
+                showThanksModal(message.failure);
+            }).finally(() => {
+                form.reset();
             });
+
+            // request.addEventListener('load', () => {
+            //     if (request.status === 200) {
+            //         console.log(request.response);
+            //         showThanksModal(message.success);
+            //         form.reset();
+            //         setTimeout(() => {
+            //             statusMessage.remove();
+            //         }, 2000);
+            //     } else {
+            //         showThanksModal(message.failure);
+            //     }
+            // });
         });
 
         function showThanksModal(message) {
@@ -293,6 +308,11 @@ setClock('.timer', deadline);
             }, 4000);
         }
     }
+
+    fetch('http://localhost:3000/menu')
+    .then(data => data.json())
+    .then(res => console.log(res));
+
 
 
 
@@ -329,7 +349,58 @@ setClock('.timer', deadline);
 
     // console.log(fff.celAge());
 
+    //filter
+
+    const names = ['Ivan', 'Ann', 'voland', 'nikita'];
+
+    const name = names.filter(name => name.length < 5);
+    console.log(name);// Ivan, Ann
+
+    //map
+
+    const answer = ['IvAn', 'AnN', 'VolaNd'];
+
+    const result = answer.map(item => item.toLowerCase());
+
+    // every/some
+
+    const aome = [4, 'ff', 'gg'];
+
+    console.log(aome.some(item => typeof(item) === 'number'));//true
+    console.log(aome.every(item => typeof(item) === 'number'));//false
+
+    //reduce
+
+    const arr = [2, 5, 6, 7, 6];
+                        // 0(по умолчанию) или 3   2
+                        // 2   5
+                        // 7   6
+                        // 13  7
+                        // 20  6
+
+    const res = arr.reduce((sum, current) => sum + current, 3);
+
+    const ff = ['apple', 'go'];
+
+    const gg = ff.reduce((some, current) => `${some}, ${current}`);
+    console.log(gg);//apple, go
+
+    //Obiect.entries
+
+    const obj = {
+        Ivan: 'persone',
+        Ann: 'persone',
+        dog: 'animal'
+    };
+
+
+    const hh = Object.entries(obj) 
+    //[ [ 'Ivan', 'persone' ], [ 'Ann', 'persone' ], [ 'dog', 'animal' ] ]
+    .filter(item => item[1] === 'persone')//[ [ 'Ivan', 'persone' ], [ 'Ann', 'persone' ] ]
+    .map(item => item[0]);// ['Ivan', 'Ann']
 });
+
+
 
 
 // const now = new Date();
